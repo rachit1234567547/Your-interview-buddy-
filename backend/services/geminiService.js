@@ -168,15 +168,21 @@ export async function evaluateInterview({ role, questions, answers }) {
     const detailedFeedback = questions.map((q, idx) => {
       const ans = answers[idx] || '';
       const ansLength = ans.trim().length;
-      let score = 50;
+      let score = 0;
       let feedback = "No answer was provided. To improve, structure your responses explaining core technical details and concrete scenarios.";
       
-      if (ansLength > 100) {
-        score = 88;
-        feedback = "Excellent response. You provided clear technical detail, demonstrated solid understanding of key concepts, and structured the answer effectively. To achieve 100%, elaborate slightly more on edge cases and scalability tradeoffs.";
-      } else if (ansLength > 20) {
+      if (ansLength === 0) {
+        score = 0;
+        feedback = "No answer was provided. To improve, structure your responses explaining core technical details and concrete scenarios.";
+      } else if (ansLength <= 20) {
+        score = 30;
+        feedback = "The response is extremely brief. To improve, provide a more detailed explanation of the concept, including any relevant frameworks, algorithms, or situations.";
+      } else if (ansLength <= 100) {
         score = 72;
         feedback = "Solid attempt. The answer touches on the main requirements but is a bit too brief. To improve, explain details more thoroughly (e.g. mention concrete API options, hooks, or specific design patterns).";
+      } else {
+        score = 88;
+        feedback = "Excellent response. You provided clear technical detail, demonstrated solid understanding of key concepts, and structured the answer effectively. To achieve 100%, elaborate slightly more on edge cases and scalability tradeoffs.";
       }
 
       let modelAnswer = "For a high scoring answer, begin with a concise summary definition. Next, present the detailed mechanism (such as Virtual DOM diffing algorithm, database indexing structures like B-Trees, or specific metrics of the STAR method). Finally, discuss tradeoffs and state why this choice makes sense in a production setting.";
