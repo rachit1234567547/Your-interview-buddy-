@@ -1,36 +1,36 @@
-/* --- Design System & Custom Styling for Your Interview Buddy (Puppy Theme) --- */
+/* --- Design System & Custom Styling for Your Interview Buddy (Purple, Green, and Red Theme) --- */
 
 :root {
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Executive Tan/Gold, Black & White Corporate Palette (from the Puppy Suit image) */
-  --bg-gradient-1: #161517;
-  --bg-gradient-2: #0b0a0c;
-  --bg-gradient-3: #221f24;
+  /* Premium Cyberpunk / Deep Purple, Emerald Green, and Crimson Red Palette */
+  --bg-gradient-1: #1a0f35;
+  --bg-gradient-2: #090615;
+  --bg-gradient-3: #281450;
   
-  --primary-base: 34, 50%, 60%; /* Warm Golden Tan / Fur color */
+  --primary-base: 272, 85%, 60%; /* Vibrant Electric Purple */
   --primary: hsl(var(--primary-base));
-  --primary-hover: hsl(34, 55%, 68%);
+  --primary-hover: hsl(272, 85%, 68%);
   --primary-glow: hsla(var(--primary-base), 0.35);
 
-  --accent-base: 36, 45%, 85%; /* Soft Cream / White Shirt */
+  --accent-base: 142, 70%, 50%; /* Emerald Green */
   --accent: hsl(var(--accent-base));
-  --accent-hover: hsl(36, 45%, 92%);
+  --accent-hover: hsl(142, 70%, 60%);
   --accent-glow: hsla(var(--accent-base), 0.3);
 
-  --danger-base: 0, 70%, 50%; /* Classy muted crimson */
+  --danger-base: 354, 85%, 56%; /* Crimson Red */
   --danger: hsl(var(--danger-base));
   --danger-glow: hsla(var(--danger-base), 0.35);
 
-  --text-primary: #fbfaf8;
-  --text-secondary: #beb8b0;
-  --text-muted: #79746e;
+  --text-primary: #fcfbfe;
+  --text-secondary: #b5adb8;
+  --text-muted: #776e7a;
 
-  --glass-bg: rgba(30, 28, 32, 0.45);
-  --glass-border: rgba(200, 150, 88, 0.15); /* Golden tint border */
-  --glass-border-focus: rgba(200, 150, 88, 0.35);
-  --glass-shadow: rgba(0, 0, 0, 0.65);
+  --glass-bg: rgba(20, 15, 32, 0.5);
+  --glass-border: rgba(139, 92, 246, 0.15); /* Purple tint border */
+  --glass-border-focus: rgba(139, 92, 246, 0.35);
+  --glass-shadow: rgba(0, 0, 0, 0.7);
   --radius-lg: 16px;
   --radius-md: 10px;
   
@@ -52,8 +52,8 @@ body {
   overflow-x: hidden;
   background-image: 
     radial-gradient(circle at 10% 20%, var(--bg-gradient-3) 0%, transparent 45%),
-    radial-gradient(circle at 90% 80%, #1e1b19 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, #0b0a0c 0%, #040405 100%);
+    radial-gradient(circle at 90% 80%, #251642 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, #0c0819 0%, #05030b 100%);
   background-attachment: fixed;
   line-height: 1.6;
 }
@@ -72,11 +72,11 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(255, 255, 255, 0.02);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(200, 150, 88, 0.15);
+  background: rgba(139, 92, 246, 0.15);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(200, 150, 88, 0.3);
+  background: rgba(139, 92, 246, 0.3);
 }
 
 /* App Container Layout */
