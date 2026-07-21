@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 export default function InterviewRoom({ questions, copilotMode, onSubmitInterview, onEndInterview }) {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [answers, setAnswers] = useState(Array(questions.length).fill(''));
@@ -104,7 +106,7 @@ export default function InterviewRoom({ questions, copilotMode, onSubmitIntervie
     if (loadingHint) return;
     setLoadingHint(true);
     try {
-      const response = await fetch('/api/hint', {
+      const response = await fetch(`${API_BASE}/api/hint`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

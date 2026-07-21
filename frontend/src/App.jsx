@@ -11,6 +11,8 @@ const VIEWS = {
   REPORT: 'REPORT'
 };
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 export default function App() {
   const [currentView, setCurrentView] = useState(VIEWS.LANDING);
   const [role, setRole] = useState('');
@@ -33,7 +35,7 @@ export default function App() {
     setCopilotMode(setupData.copilotMode);
 
     try {
-      const response = await fetch('/api/questions', {
+      const response = await fetch(`${API_BASE}/api/questions`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,7 +76,7 @@ export default function App() {
     setAnswers(finalAnswers);
 
     try {
-      const response = await fetch('/api/evaluate', {
+      const response = await fetch(`${API_BASE}/api/evaluate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
