@@ -1,4 +1,4 @@
-﻿import { GoogleGenAI } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -117,7 +117,7 @@ export async function getHint({ question, history = [] }) {
     return {
       hints: [
         "Structure your response by introducing the core concept before diving into code details.",
-        "Talk about tradeoffsâ€”for instance, memory overhead vs. execution speed or consistency vs. availability.",
+        "Talk about tradeoffs—for instance, memory overhead vs. execution speed or consistency vs. availability.",
         "Give a concrete real-world example from your past work showing how this applies."
       ]
     };
@@ -163,3 +163,105 @@ export async function getHint({ question, history = [] }) {
  */
 export async function evaluateInterview({ role, questions, answers }) {
   if (isDemoMode) {
+    console.log(`[DEMO MODE] Evaluating interview for role: ${role}`);
+    
+    const detailedFeedback = questions.map((q, idx) => {
+      const ans = answers[idx] || '';
+      const ansLength = ans.trim().length;
+      let score = 50;
+      let feedback = "No answer was provided. To improve, structure your responses explaining core technical details and concrete scenarios.";
+      
+      if (ansLength > 100) {
+        score = 88;
+        feedback = "Excellent response. You provided clear technical detail, demonstrated solid understanding of key concepts, and structured the answer effectively. To achieve 100%, elaborate slightly more on edge cases and scalability tradeoffs.";
+      } else if (ansLength > 20) {
+        score = 72;
+        feedback = "Solid attempt. The answer touches on the main requirements but is a bit too brief. To improve, explain details more thoroughly (e.g. mention concrete API options, hooks, or specific design patterns).";
+      }
+
+      let modelAnswer = "For a high scoring answer, begin with a concise summary definition. Next, present the detailed mechanism (such as Virtual DOM diffing algorithm, database indexing structures like B-Trees, or specific metrics of the STAR method). Finally, discuss tradeoffs and state why this choice makes sense in a production setting.";
+      if (q.type === 'behavioral') {
+        modelAnswer = "To answer behavioral questions optimally, structure using the STAR framework: Describe the Situation (context), the Task (what you needed to do), your specific Action (the technical and collaborative steps you took), and the Result (quantifiable impacts, such as 'reduced latency by 30%', and learnings).";
+      }
+
+      return {
+        questionNumber: idx + 1,
+        question: q.question,
+        answer: ans,
+        score,
+        feedback,
+        modelAnswer
+      };
+    });
+
+    const averageScore = Math.round(detailedFeedback.reduce((acc, item) => acc + item.score, 0) / questions.length);
+
+    return {
+      overallScore: averageScore,
+      categories: {
+        technicalAccuracy: Math.min(100, Math.round(averageScore * 1.05)),
+        communication: Math.min(100, Math.round(averageScore * 0.98)),
+        structure: Math.min(100, Math.round(averageScore * 0.95))
+      },
+      generalFeedback: `Demo Evaluation Summary:
+This scorecard is generated in Demo Mode because GEMINI_API_KEY is not configured in backend/.env. 
+
+Overall, the candidate demonstrates solid potential for the ${role} role. Communication was clear, and technical concepts were explained. Key strengths include logical structuring of arguments. Areas for development include exploring tradeoffs in more detail, addressing edge cases, and quantifying results in behavioral scenarios. To get real-time LLM grading, configure the GEMINI_API_KEY.`,
+      detailedFeedback
+    };
+  }
+
+  // Real LLM evaluation
+  const QAData = questions.map((q, index) => ({
+    questionNumber: index + 1,
+    type: q.type,
+    question: q.question,
+    candidateAnswer: answers[index] || '(No response provided)'
+  }));
+
+  const prompt = `
+    You are a senior hiring manager conducting a post-interview review for a candidate who applied for the role: "${role}".
+    
+    Evaluate the following interview transcript where the candidate responded to each question:
+    ${JSON.stringify(QAData, null, 2)}
+
+    Analyze each response for correctness, depth, communication style, and structured thinking (e.g., using STAR method for behavioral, scalability concepts for system design).
+    Provide an overall score out of 100, score breakdowns for key categories (Technical Accuracy, Communication, Structure/Formatting), general feedback, and detailed feedback for each question including an ideal "model answer".
+
+    You MUST respond with a valid JSON object. Do not include markdown code block syntax.
+    The schema must be:
+    {
+      "overallScore": number (between 0 and 100),
+      "categories": {
+        "technicalAccuracy": number (0-100),
+        "communication": number (0-100),
+        "structure": number (0-100)
+      },
+      "generalFeedback": "string (overall summary of strengths, major weaknesses, and recommendations for improvement)",
+      "detailedFeedback": [
+        {
+          "questionNumber": number,
+          "question": "string",
+          "answer": "string",
+          "score": number (0-100),
+          "feedback": "string (constructive analysis of their answer)",
+          "modelAnswer": "string (a high-quality sample answer that would receive a 100 score)"
+        }
+      ]
+    }
+  `;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json'
+      }
+    });
+    return JSON.parse(response.text);
+  } catch (error) {
+    console.error('Error evaluating interview with Gemini:', error);
+    throw new Error('Failed to evaluate interview: ' + error.message);
+  }
+}
