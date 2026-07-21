@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import LandingView from './components/LandingView';
 import SetupView from './components/SetupView';
 import InterviewRoom from './components/InterviewRoom';
@@ -114,3 +114,71 @@ export default function App() {
     setAnswers([]);
     setEvaluation(null);
     setCurrentView(VIEWS.LANDING);
+  };
+
+  return (
+    <div className="app-container">
+      {/* Header */}
+      <header className="app-header">
+        <div className="logo-container" onClick={handleRestart}>
+          <img src="/logo.jpg" alt="Logo" className="logo-img" />
+          <div className="logo-text-wrapper">
+            <span className="logo-text">Your Interview Buddy</span>
+            <span className="logo-subtitle">We will get you hired</span>
+          </div>
+        </div>
+        <div className="nav-actions">
+          {currentView === VIEWS.INTERVIEW && (
+            <button className="btn btn-secondary" onClick={handleRestart} style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+              <i className="fa-solid fa-arrow-left-long"></i> Leave Room
+            </button>
+          )}
+          {currentView === VIEWS.REPORT && (
+            <button className="btn btn-primary" onClick={handleRestart} style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
+              New Session
+            </button>
+          )}
+        </div>
+      </header>
+
+      {/* Main View Container */}
+      <main className="main-content">
+        {currentView === VIEWS.LANDING && (
+          <LandingView onStart={() => setCurrentView(VIEWS.SETUP)} />
+        )}
+
+        {currentView === VIEWS.SETUP && (
+          <SetupView 
+            onSubmit={handleStartInterview} 
+            onBack={() => setCurrentView(VIEWS.LANDING)} 
+          />
+        )}
+
+        {currentView === VIEWS.INTERVIEW && (
+          <InterviewRoom 
+            questions={questions}
+            copilotMode={copilotMode}
+            onSubmitInterview={handleSubmitInterview}
+            onEndInterview={handleRestart}
+          />
+        )}
+
+        {currentView === VIEWS.REPORT && evaluation && (
+          <ReviewDashboard 
+            role={role}
+            evaluation={evaluation}
+            onRestart={handleRestart}
+          />
+        )}
+      </main>
+
+      {/* Full-screen Loading Overlay */}
+      {loading && (
+        <div className="loader-overlay">
+          <div className="loader-spinner"></div>
+          <span className="loader-text">{loadingText}</span>
+        </div>
+      )}
+    </div>
+  );
+}
