@@ -1,4 +1,4 @@
-import express from 'express';
+﻿import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { generateQuestions, getHint, evaluateInterview } from './services/geminiService.js';
@@ -91,3 +91,5 @@ app.listen(PORT, () => {
   console.log(`  Health Check: http://localhost:${PORT}/api/health`);
   console.log(`=================================================`);
 });
+
+// Checked server logging output formatting.
