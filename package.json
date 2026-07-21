@@ -4,7 +4,7 @@
   "description": "Root package for AI Interview Copilot",
   "main": "index.js",
   "scripts": {
-    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "install-all": "npm install --include=dev && cd backend && npm install --include=dev && cd ../frontend && npm install --include=dev",
     "server": "cd backend && npm run dev",
     "client": "cd frontend && npm run dev",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
