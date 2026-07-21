@@ -14,3 +14,33 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+app.use(express.json());
+
+// Logger middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'OK', message: 'AI Interview Copilot Backend is running.' });
+});
+
+// Endpoint to generate questions
+app.post('/api/questions', async (req, res) => {
+  const { role, experience, jobDescription, resumeText, count } = req.body;
+
+  if (!role || !experience) {
+    return res.status(400).json({ error: 'Role and Experience level are required fields.' });
+  }
+
+  try {
+    const questions = await generateQuestions({ role, experience, jobDescription, resumeText, count });
+    res.json({ questions });
+  } catch (error) {
+    console.error('Error in /api/questions:', error);
+    res.status(500).json({ error: error.message || 'An error occurred while generating questions.' });
+  }
+});
