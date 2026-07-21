@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 export default function ReviewDashboard({ role, evaluation, onRestart }) {
   const { overallScore, categories, generalFeedback, detailedFeedback } = evaluation;
@@ -99,3 +99,59 @@ export default function ReviewDashboard({ role, evaluation, onRestart }) {
             return (
               <div className="transcript-card" key={index}>
                 <div 
+                  className="transcript-card-header" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setExpandedIndex(isExpanded ? -1 : index)}
+                >
+                  <div>
+                    <span className="transcript-question-num" style={{ color: 'var(--accent)', marginRight: '0.75rem' }}>
+                      Q{item.questionNumber || index + 1}
+                    </span>
+                    <span style={{ fontWeight: '600' }}>
+                      {item.question.length > 70 ? item.question.substring(0, 70) + '...' : item.question}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <span className={getScoreBadgeClass(item.score)}>
+                      {item.score}%
+                    </span>
+                    <i className={`fa-solid ${isExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}`} style={{ color: 'var(--text-muted)' }}></i>
+                  </div>
+                </div>
+
+                {isExpanded && (
+                  <div className="transcript-qa-block fade-in">
+                    
+                    <div className="qa-bubble question">
+                      <div className="qa-label">Interview Question</div>
+                      <p>{item.question}</p>
+                    </div>
+
+                    <div className="qa-bubble answer">
+                      <div className="qa-label">Your Response</div>
+                      <p style={{ fontStyle: item.answer ? 'normal' : 'italic', color: item.answer ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                        {item.answer || '(No answer provided)'}
+                      </p>
+                    </div>
+
+                    <div className="qa-bubble feedback">
+                      <div className="qa-label">Evaluation & Critiques</div>
+                      <p>{item.feedback}</p>
+                    </div>
+
+                    <div className="qa-bubble model-answer">
+                      <div className="qa-label">Model Sample Answer</div>
+                      <p>{item.modelAnswer}</p>
+                    </div>
+
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      
+    </div>
+  );
+}
