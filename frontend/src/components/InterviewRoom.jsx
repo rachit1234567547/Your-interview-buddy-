@@ -69,3 +69,83 @@ export default function InterviewRoom({ questions, copilotMode, onSubmitIntervie
 
       recognitionRef.current = rec;
     } else {
+      console.warn('Web Speech API is not supported in this browser.');
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+    };
+  }, []);
+
+  // Toggle Recording
+  const toggleRecording = () => {
+    if (!recognitionRef.current) {
+      alert('Speech Recognition is not supported on this browser. Please use Chrome, Edge, or type your answer manually.');
+      return;
+    }
+
+    if (isRecording) {
+      recognitionRef.current.stop();
+      setIsRecording(false);
+    } else {
+      try {
+        recognitionRef.current.start();
+        setIsRecording(true);
+      } catch (err) {
+        console.error('Error starting speech recognition:', err);
+      }
+    }
+  };
+
+  // Fetch AI Hint from backend
+  const fetchHint = async () => {
+    if (loadingHint) return;
+    setLoadingHint(true);
+    try {
+      const response = await fetch('/api/hint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          question: activeQuestion.question,
+          history: [] // Can feed current transcript context if desired
+        })
+      });
+      const data = await response.json();
+      if (data.hints) {
+        setHints(data.hints);
+      } else {
+        setHints(['Try structuring your answer with context, your actions, and results.', 'Explain the technical tradeoffs.']);
+      }
+    } catch (error) {
+      console.error('Error loading hint:', error);
+      setHints(['Could not load dynamic hints. Try focusing on the STAR method or design tradeoffs.']);
+    } finally {
+      setLoadingHint(false);
+    }
+  };
+
+  const handleNext = () => {
+    // Stop recording if active
+    if (isRecording && recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+
+    // Save answer
+    const newAnswers = [...answers];
+    newAnswers[currentIdx] = currentAnswer.trim();
+    setAnswers(newAnswers);
+
+    if (currentIdx < questions.length - 1) {
+      setCurrentIdx(prev => prev + 1);
+    } else {
+      onSubmitInterview(newAnswers);
+    }
+  };
+
+  const handleSkip = () => {
+    if (isRecording && recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+    const newAnswers = [...answers];
