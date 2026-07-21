@@ -1,36 +1,36 @@
-/* --- Design System & Custom Styling for Your Interview Buddy (Purple, Green, and Red Theme) --- */
+/* --- Design System & Custom Styling for Your Interview Buddy (Green, Red, and Visible Dropdowns) --- */
 
 :root {
   --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
-  /* Premium Cyberpunk / Deep Purple, Emerald Green, and Crimson Red Palette */
-  --bg-gradient-1: #1a0f35;
-  --bg-gradient-2: #090615;
-  --bg-gradient-3: #281450;
+  /* Premium Forest Green background, Emerald accents, Crimson features */
+  --bg-gradient-1: #0a2116; /* Deep forest green */
+  --bg-gradient-2: #030c08; /* Dark jade-black */
+  --bg-gradient-3: #113627; /* Glowing emerald-green */
   
-  --primary-base: 272, 85%, 60%; /* Vibrant Electric Purple */
+  --primary-base: 142, 70%, 48%; /* Emerald green */
   --primary: hsl(var(--primary-base));
-  --primary-hover: hsl(272, 85%, 68%);
+  --primary-hover: hsl(142, 70%, 56%);
   --primary-glow: hsla(var(--primary-base), 0.35);
 
-  --accent-base: 142, 70%, 50%; /* Emerald Green */
+  --accent-base: 142, 70%, 55%; /* Accent light emerald */
   --accent: hsl(var(--accent-base));
-  --accent-hover: hsl(142, 70%, 60%);
+  --accent-hover: hsl(142, 70%, 65%);
   --accent-glow: hsla(var(--accent-base), 0.3);
 
   --danger-base: 354, 85%, 56%; /* Crimson Red */
   --danger: hsl(var(--danger-base));
   --danger-glow: hsla(var(--danger-base), 0.35);
 
-  --text-primary: #fcfbfe;
-  --text-secondary: #b5adb8;
-  --text-muted: #776e7a;
+  --text-primary: #fbfdfc;
+  --text-secondary: #a9beb3;
+  --text-muted: #6b8275;
 
-  --glass-bg: rgba(20, 15, 32, 0.5);
-  --glass-border: rgba(139, 92, 246, 0.15); /* Purple tint border */
-  --glass-border-focus: rgba(139, 92, 246, 0.35);
-  --glass-shadow: rgba(0, 0, 0, 0.7);
+  --glass-bg: rgba(10, 20, 15, 0.5);
+  --glass-border: rgba(16, 185, 129, 0.15); /* Green tint border */
+  --glass-border-focus: rgba(16, 185, 129, 0.35);
+  --glass-shadow: rgba(0, 0, 0, 0.75);
   --radius-lg: 16px;
   --radius-md: 10px;
   
@@ -52,8 +52,8 @@ body {
   overflow-x: hidden;
   background-image: 
     radial-gradient(circle at 10% 20%, var(--bg-gradient-3) 0%, transparent 45%),
-    radial-gradient(circle at 90% 80%, #251642 0%, transparent 45%),
-    radial-gradient(circle at 50% 50%, #0c0819 0%, #05030b 100%);
+    radial-gradient(circle at 90% 80%, #0e2f20 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, #030d0a 0%, #010403 100%);
   background-attachment: fixed;
   line-height: 1.6;
 }
@@ -72,11 +72,11 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(255, 255, 255, 0.02);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(139, 92, 246, 0.15);
+  background: rgba(16, 185, 129, 0.15);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 92, 246, 0.3);
+  background: rgba(16, 185, 129, 0.3);
 }
 
 /* App Container Layout */
@@ -316,43 +316,46 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .feature-card {
-  background: rgba(255, 255, 255, 0.01);
-  border: 1px solid var(--glass-border);
+  background: #991b1b; /* Crimson Red background */
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-md);
-  padding: 1.75rem;
+  padding: 1.15rem 1rem; /* Compact padding to make cards short */
   transition: var(--transition-smooth);
+  color: #ffffff; /* Highly visible text */
 }
 
 .feature-card:hover {
-  border-color: rgba(200, 150, 88, 0.35);
+  border-color: rgba(255, 255, 255, 0.35);
   transform: translateY(-4px);
-  background: rgba(255, 255, 255, 0.03);
+  background: #b91c1c; /* Lighter red on hover */
+  box-shadow: 0 4px 20px rgba(153, 27, 27, 0.4);
 }
 
 .feature-icon-wrapper {
-  width: 48px;
-  height: 48px;
-  background: rgba(200, 150, 88, 0.08);
+  width: 38px;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.15); /* Light translucent white on red */
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
 }
 
 .feature-icon-wrapper i {
-  color: var(--primary);
-  font-size: 1.25rem;
+  color: #ffffff; /* White icon */
+  font-size: 1rem;
 }
 
 .feature-card h3 {
-  font-size: 1.15rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+  color: #ffffff;
 }
 
 .feature-card p {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  font-size: 0.82rem;
+  color: #fecaca; /* Muted light red text, highly visible on crimson */
 }
 
 /* Forms & Inputs */
@@ -385,6 +388,11 @@ h1, h2, h3, h4, h5, h6 {
 .form-input:focus, .form-select:focus, .form-textarea:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.form-select option {
+  background-color: #030c08; /* Dark green-black matching background */
+  color: #fbfdfc;            /* White text */
 }
 
 .form-row {

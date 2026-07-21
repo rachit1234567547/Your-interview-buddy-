@@ -18,6 +18,8 @@ export default function LandingView({ onStart }) {
         Start Practicing Free <i className="fa-solid fa-arrow-right"></i>
       </button>
 
+      <h2 style={{ fontSize: '1.75rem', marginTop: '4rem', color: 'var(--danger)', textTransform: 'uppercase', letterSpacing: '0.05em', fontFamily: 'var(--font-heading)' }}>What We Offer</h2>
+
       <div className="features-grid">
         <div className="feature-card">
           <div className="feature-icon-wrapper">
