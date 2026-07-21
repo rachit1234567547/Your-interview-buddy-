@@ -51,3 +51,66 @@ export async function generateQuestions({ role, experience, jobDescription, resu
     console.log(`[DEMO MODE] Generating questions for: ${role} (${experience})`);
     
     // Choose appropriate mock set based on role text
+    const roleLower = role.toLowerCase();
+    let baseList = DEMO_QUESTIONS.general;
+    if (roleLower.includes('front') || roleLower.includes('react') || roleLower.includes('ui')) {
+      baseList = DEMO_QUESTIONS.frontend;
+    } else if (roleLower.includes('back') || roleLower.includes('node') || roleLower.includes('db') || roleLower.includes('system')) {
+      baseList = DEMO_QUESTIONS.backend;
+    }
+
+    // Map questions up to requested count
+    const result = [];
+    for (let i = 0; i < count; i++) {
+      const template = baseList[i % baseList.length];
+      result.push({
+        id: i + 1,
+        question: template.question,
+        type: template.type,
+        context: `Tailored for ${experience} ${role}. ${template.context}`
+      });
+    }
+    return result;
+  }
+
+  const prompt = `
+    You are an expert technical recruiter and interviewer.
+    Generate a list of exactly ${count} interview questions for a candidate with the following details:
+    - Target Role: ${role}
+    - Experience Level: ${experience}
+    - Job Description: ${jobDescription || 'Not provided'}
+    - Candidate Resume Summary: ${resumeText || 'Not provided'}
+
+    Please generate a mix of technical, behavioral, and system design questions tailored to their profile and the job description.
+    
+    You MUST respond with a valid JSON array of objects. Do not include markdown code block syntax (like \`\`\`json) in the response text itself, just raw JSON.
+    Each object in the array must have the following schema:
+    {
+      "id": number (starting from 1),
+      "question": "string (the actual question to ask)",
+      "type": "string (either 'technical', 'behavioral', or 'system-design')",
+      "context": "string (brief explanation of why this question is relevant based on their resume or the job description)"
+    }
+  `;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json'
+      }
+    });
+    return JSON.parse(response.text);
+  } catch (error) {
+    console.error('Error generating questions with Gemini:', error);
+    throw new Error('Failed to generate interview questions: ' + error.message);
+  }
+}
+
+/**
+ * Generates a real-time hint for a candidate struggling with a question.
+ */
+export async function getHint({ question, history = [] }) {
+  if (isDemoMode) {
+    console.log(`[DEMO MODE] Fetching hint for question: ${question}`);
