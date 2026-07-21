@@ -95,7 +95,7 @@ export async function generateQuestions({ role, experience, jobDescription, resu
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.5-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json'
@@ -145,7 +145,7 @@ export async function getHint({ question, history = [] }) {
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.5-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json'
@@ -259,7 +259,7 @@ Overall, the candidate demonstrates solid potential for the ${role} role. Commun
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.5-flash',
       contents: prompt,
       config: {
         responseMimeType: 'application/json'
