@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 
 const POPULAR_ROLES = [
   'Frontend Engineer',
@@ -138,3 +138,5 @@ export default function SetupView({ onSubmit, onBack }) {
     </div>
   );
 }
+
+// Completed form validation checks.
