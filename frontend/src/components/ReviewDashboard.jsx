@@ -49,3 +49,53 @@ export default function ReviewDashboard({ role, evaluation, onRestart }) {
         </div>
 
         <button className="btn btn-primary" onClick={onRestart}>
+          <i className="fa-solid fa-rotate-left"></i> Start New Practice
+        </button>
+      </div>
+
+      {/* Metric Breakdown */}
+      <div className="dashboard-stats-grid">
+        {categoryStats.map((stat, idx) => (
+          <div className="stat-box" key={idx}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <span className="stat-title">
+                <i className={`fa-solid ${stat.icon}`} style={{ marginRight: '0.5rem', color: 'var(--primary)' }}></i>
+                {stat.title}
+              </span>
+              <span className="stat-value-text">{stat.value}%</span>
+            </div>
+            <div className="stat-value-bar-container">
+              <div 
+                className="stat-value-bar" 
+                style={{ 
+                  width: `${stat.value}%`, 
+                  background: `linear-gradient(to right, var(--primary), var(--accent))`
+                }}
+              ></div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* General summary feedback */}
+      <div className="general-feedback-box">
+        <h3>
+          <i className="fa-solid fa-clipboard-check"></i> Recruiter Feedback Summary
+        </h3>
+        <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.7', fontSize: '0.95rem', color: 'var(--text-primary)' }}>
+          {generalFeedback}
+        </p>
+      </div>
+
+      {/* Detailed Q&A Transcript */}
+      <div>
+        <h3 style={{ fontSize: '1.25rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <i className="fa-solid fa-list-check" style={{ color: 'var(--accent)' }}></i> Question-by-Question breakdown
+        </h3>
+        
+        <div className="transcript-section">
+          {detailedFeedback.map((item, index) => {
+            const isExpanded = expandedIndex === index;
+            return (
+              <div className="transcript-card" key={index}>
+                <div 
