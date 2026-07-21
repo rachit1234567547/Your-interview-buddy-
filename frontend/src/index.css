@@ -1,0 +1,51 @@
+﻿/* --- Design System & Custom Styling for Your Interview Buddy (Puppy Theme) --- */
+
+:root {
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Executive Tan/Gold, Black & White Corporate Palette (from the Puppy Suit image) */
+  --bg-gradient-1: #161517;
+  --bg-gradient-2: #0b0a0c;
+  --bg-gradient-3: #221f24;
+  
+  --primary-base: 34, 50%, 60%; /* Warm Golden Tan / Fur color */
+  --primary: hsl(var(--primary-base));
+  --primary-hover: hsl(34, 55%, 68%);
+  --primary-glow: hsla(var(--primary-base), 0.35);
+
+  --accent-base: 36, 45%, 85%; /* Soft Cream / White Shirt */
+  --accent: hsl(var(--accent-base));
+  --accent-hover: hsl(36, 45%, 92%);
+  --accent-glow: hsla(var(--accent-base), 0.3);
+
+  --danger-base: 0, 70%, 50%; /* Classy muted crimson */
+  --danger: hsl(var(--danger-base));
+  --danger-glow: hsla(var(--danger-base), 0.35);
+
+  --text-primary: #fbfaf8;
+  --text-secondary: #beb8b0;
+  --text-muted: #79746e;
+
+  --glass-bg: rgba(30, 28, 32, 0.45);
+  --glass-border: rgba(200, 150, 88, 0.15); /* Golden tint border */
+  --glass-border-focus: rgba(200, 150, 88, 0.35);
+  --glass-shadow: rgba(0, 0, 0, 0.65);
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-gradient-2);
+  color: var(--text-primary);
+  min-height: 100vh;
