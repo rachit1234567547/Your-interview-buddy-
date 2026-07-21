@@ -114,3 +114,52 @@ export async function generateQuestions({ role, experience, jobDescription, resu
 export async function getHint({ question, history = [] }) {
   if (isDemoMode) {
     console.log(`[DEMO MODE] Fetching hint for question: ${question}`);
+    return {
+      hints: [
+        "Structure your response by introducing the core concept before diving into code details.",
+        "Talk about tradeoffsâ€”for instance, memory overhead vs. execution speed or consistency vs. availability.",
+        "Give a concrete real-world example from your past work showing how this applies."
+      ]
+    };
+  }
+
+  const conversationHistory = history.map(h => `${h.role === 'user' ? 'Candidate' : 'Interviewer'}: ${h.text}`).join('\n');
+
+  const prompt = `
+    You are an interview coach helper (Copilot).
+    The candidate is currently trying to answer this question: "${question}"
+    
+    Here is the brief conversation history so far:
+    ${conversationHistory || 'None'}
+
+    Provide exactly 3 short, actionable, bulleted hints or talking points to help the candidate structure their thoughts.
+    Keep the points brief (max 15 words per point) and highly tactical.
+    Do not answer the question for them, just guide them on how to approach it.
+
+    Respond with a valid JSON object. Do not include markdown code block syntax.
+    The schema must be:
+    {
+      "hints": ["hint 1", "hint 2", "hint 3"]
+    }
+  `;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        responseMimeType: 'application/json'
+      }
+    });
+    return JSON.parse(response.text);
+  } catch (error) {
+    console.error('Error getting hint with Gemini:', error);
+    throw new Error('Failed to get interview hint: ' + error.message);
+  }
+}
+
+/**
+ * Evaluates the full interview transcript and returns details, score card, and suggestions.
+ */
+export async function evaluateInterview({ role, questions, answers }) {
+  if (isDemoMode) {
