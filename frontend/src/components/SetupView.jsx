@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 
 const POPULAR_ROLES = [
   'Frontend Engineer',
@@ -35,10 +35,10 @@ export default function SetupView({ onSubmit, onBack }) {
 
   return (
     <div className="glass-panel fade-in" style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', background: 'linear-gradient(to right, #fff, #cbd5e1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+      <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#0c0b1a', fontFamily: 'var(--font-heading)' }}>
         Configure Your Interview Session
       </h2>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+      <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>
         Provide information about your target role and profile. We will build a customized mock interview for you.
       </p>
 

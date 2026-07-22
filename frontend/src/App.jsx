@@ -21,6 +21,7 @@ export default function App() {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState([]);
   const [evaluation, setEvaluation] = useState(null);
+  const [showBanner, setShowBanner] = useState(true);
   
   // Loading State
   const [loading, setLoading] = useState(false);
@@ -120,24 +121,52 @@ export default function App() {
 
   return (
     <div className="app-container">
+      {/* Monsoon Banner */}
+      {showBanner && (
+        <div className="monsoon-banner">
+          <div className="monsoon-banner-content">
+            <span className="monsoon-umbrella">🌧️</span>
+            <span className="monsoon-text">
+              Monsoon Sale! Let Confidence Rain with <strong>6% Off</strong>. Code: <strong className="monsoon-code">MONSOON6</strong>
+            </span>
+            <button className="btn-monsoon-schedule" onClick={() => setCurrentView(VIEWS.SETUP)}>Schedule now</button>
+          </div>
+          <button className="monsoon-close-btn" onClick={() => setShowBanner(false)}>×</button>
+        </div>
+      )}
+
       {/* Header */}
       <header className="app-header">
         <div className="logo-container" onClick={handleRestart}>
-          <img src="/logo.jpg" alt="Logo" className="logo-img" />
-          <div className="logo-text-wrapper">
-            <span className="logo-text">Your Interview Buddy</span>
-            <span className="logo-subtitle">We will get you hired</span>
-          </div>
+          <div className="logo-circle-icon">ib</div>
+          <span className="logo-brand-text">
+            <span className="logo-brand-word-1">interview</span>
+            <span className="logo-brand-word-2">buddy</span>
+          </span>
         </div>
+
+        {/* Center Nav Links (Hidden on small screens) */}
+        <div className="header-nav-links">
+          <span className="header-nav-link">Why us?</span>
+          <span className="header-nav-link">Pricing</span>
+          <span className="header-nav-link dropdown-link">
+            Trending <i className="fa-solid fa-chevron-down dropdown-arrow"></i>
+          </span>
+          <span className="header-nav-link">Testimonials</span>
+          <span className="header-nav-link dropdown-link">
+            For organizations <i className="fa-solid fa-chevron-down dropdown-arrow"></i>
+          </span>
+          <span className="header-nav-link">Contact us</span>
+        </div>
+
         <div className="nav-actions">
-          {currentView === VIEWS.INTERVIEW && (
+          {currentView === VIEWS.INTERVIEW ? (
             <button className="btn btn-secondary" onClick={handleRestart} style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
               <i className="fa-solid fa-arrow-left-long"></i> Leave Room
             </button>
-          )}
-          {currentView === VIEWS.REPORT && (
-            <button className="btn btn-primary" onClick={handleRestart} style={{ padding: '0.5rem 1rem', fontSize: '0.85rem' }}>
-              New Session
+          ) : (
+            <button className="btn header-get-started" onClick={() => setCurrentView(VIEWS.SETUP)}>
+              Get started
             </button>
           )}
         </div>
@@ -146,13 +175,22 @@ export default function App() {
       {/* Main View Container */}
       <main className="main-content">
         {currentView === VIEWS.LANDING && (
-          <LandingView onStart={() => setCurrentView(VIEWS.SETUP)} />
+          <LandingView onStart={(selectedRole) => {
+            if (selectedRole) {
+              setRole(selectedRole);
+            }
+            setCurrentView(VIEWS.SETUP);
+          }} />
         )}
 
         {currentView === VIEWS.SETUP && (
           <SetupView 
             onSubmit={handleStartInterview} 
-            onBack={() => setCurrentView(VIEWS.LANDING)} 
+            onBack={() => {
+              setRole('');
+              setCurrentView(VIEWS.LANDING);
+            }} 
+            defaultRole={role}
           />
         )}
 
