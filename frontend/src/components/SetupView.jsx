@@ -35,7 +35,7 @@ export default function SetupView({ onSubmit, onBack }) {
 
   return (
     <div className="glass-panel fade-in" style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: '#0c0b1a', fontFamily: 'var(--font-heading)' }}>
+      <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem', color: 'var(--text-primary)', fontFamily: 'var(--font-heading)' }}>
         Configure Your Interview Session
       </h2>
       <p style={{ color: 'var(--text-muted)', marginBottom: '2rem' }}>

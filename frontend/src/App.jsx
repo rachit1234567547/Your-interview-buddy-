@@ -119,6 +119,17 @@ export default function App() {
     setCurrentView(VIEWS.LANDING);
   };
 
+  const navigateAndScroll = (selector) => {
+    if (currentView !== VIEWS.LANDING) {
+      setCurrentView(VIEWS.LANDING);
+      setTimeout(() => {
+        document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    } else {
+      document.querySelector(selector)?.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="app-container">
       {/* Monsoon Banner */}
@@ -138,25 +149,25 @@ export default function App() {
       {/* Header */}
       <header className="app-header">
         <div className="logo-container" onClick={handleRestart}>
-          <div className="logo-circle-icon">ib</div>
-          <span className="logo-brand-text">
-            <span className="logo-brand-word-1">interview</span>
-            <span className="logo-brand-word-2">buddy</span>
-          </span>
+          <img src="/logo.jpg" alt="Logo" className="logo-img" />
+          <div className="logo-text-wrapper">
+            <span className="logo-text">Your Interview Buddy</span>
+            <span className="logo-subtitle">We will get you hired</span>
+          </div>
         </div>
 
         {/* Center Nav Links (Hidden on small screens) */}
         <div className="header-nav-links">
-          <span className="header-nav-link">Why us?</span>
-          <span className="header-nav-link">Pricing</span>
+          <span className="header-nav-link" onClick={() => navigateAndScroll('.why-us-section')}>Why us?</span>
+          <span className="header-nav-link" onClick={() => navigateAndScroll('.pricing-section')}>Pricing</span>
           <span className="header-nav-link dropdown-link">
             Trending <i className="fa-solid fa-chevron-down dropdown-arrow"></i>
           </span>
-          <span className="header-nav-link">Testimonials</span>
+          <span className="header-nav-link" onClick={() => navigateAndScroll('.reviews-section')}>Testimonials</span>
           <span className="header-nav-link dropdown-link">
             For organizations <i className="fa-solid fa-chevron-down dropdown-arrow"></i>
           </span>
-          <span className="header-nav-link">Contact us</span>
+          <span className="header-nav-link" onClick={() => navigateAndScroll('.app-footer')}>Contact us</span>
         </div>
 
         <div className="nav-actions">
